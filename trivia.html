@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivia</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+</head>
+<body>
+    <button id="refresh">Take another quiz!</button>
+    <h3>Trivia Night!</h3>
+    <h4>Category: Film</h4>
+    <div id="points"></div>
+    <div id="category"></div>
+    <div id="one">
+    </div>
+    <button value="one">100</button>
+    <button value="one">100</button>
+    <button value="one">100</button>
+    <div id="two">
+    </div>
+    <button value="two">200</button>
+    <button value="two">200</button>
+    <button value="two">200</button>
+    <div id="three">
+    </div>
+    <button value="three">300</button>
+    <button value="three">300</button>
+    <button value="three">300</button>   
+    <script>
+        $('button').click(function() {
+            var button = $(this);
+            $(button).toggle();
+            if(button.attr('value') == 'one'){
+                $.get("https://opentdb.com/api.php?amount=50&category=11&difficulty=easy&type=multiple", function(data){
+                    var question_num = Math.floor(Math.random() * 50);
+                    var multiple_choice = [];
+                    while(multiple_choice.length<4){
+                        var options = Math.floor(Math.random() * 4);
+                        if(multiple_choice.indexOf(options) > -1) continue;
+                        multiple_choice[multiple_choice.length] = options;
+                    }
+                    var new_arr = data.results[question_num].incorrect_answers;
+                    var answer = data.results[question_num].correct_answer
+                    new_arr.push(answer);
+                    var form = (`${data.results[question_num].question}` + `<input type='radio' value='${new_arr[multiple_choice[0]]}' "name='easy'>` + `${new_arr[multiple_choice[0]]}`+ `<input type='radio' value = '${new_arr[multiple_choice[1]]}' name='easy'>` + `${new_arr[multiple_choice[1]]}` + `<input type='radio' value='${new_arr[multiple_choice[2]]}' name='easy'>` + `${new_arr[multiple_choice[2]]}` + `<input type='radio' value='${new_arr[multiple_choice[3]]}' name='easy'>` + `${new_arr[multiple_choice[3]]}`);
+                    $("#one").show();
+                    document.getElementById("one").innerHTML=form;
+                    $('input[type=radio]').click(function(){
+                            $('#one').toggle();
+                            if(this.value == answer){
+                                points(100);
+                            }
+                        });
+                    });
+            }
+            else if(button.attr('value') == 'two'){
+                $.get("https://opentdb.com/api.php?amount=50&category=11&difficulty=medium&type=multiple", function(data){
+                    var question_num = Math.floor(Math.random() * 50);
+                    var multiple_choice = [];
+                    while(multiple_choice.length<4){
+                        var options = Math.floor(Math.random() * 4);
+                        if(multiple_choice.indexOf(options) > -1) continue;
+                        multiple_choice[multiple_choice.length] = options;
+                    }
+                    var new_arr = data.results[question_num].incorrect_answers;
+                    var answer = data.results[question_num].correct_answer
+                    new_arr.push(answer);
+                    var form = (`${data.results[question_num].question}` + `<input type='radio' value='${new_arr[multiple_choice[0]]}' "name='easy'>` + `${new_arr[multiple_choice[0]]}`+ `<input type='radio' value = '${new_arr[multiple_choice[1]]}' name='easy'>` + `${new_arr[multiple_choice[1]]}` + `<input type='radio' value='${new_arr[multiple_choice[2]]}' name='easy'>` + `${new_arr[multiple_choice[2]]}` + `<input type='radio' value='${new_arr[multiple_choice[3]]}' name='easy'>` + `${new_arr[multiple_choice[3]]}`);
+                    $("#two").show();
+                    document.getElementById("two").innerHTML=form;
+                    $('input[type=radio]').click(function(){
+                        $('#two').toggle();
+                        if(this.value == answer){
+                            points(200);
+                        }
+                    });
+                });
+            }
+            else{
+                $.get("https://opentdb.com/api.php?amount=26&category=11&difficulty=hard&type=multiple", function(data){
+                    var question_num = Math.floor(Math.random() * 26);
+                    var multiple_choice = [];
+                    while(multiple_choice.length<4){
+                        var options = Math.floor(Math.random() * 4);
+                        if(multiple_choice.indexOf(options) > -1) continue;
+                        multiple_choice[multiple_choice.length] = options;
+                    }
+                    var new_arr = data.results[question_num].incorrect_answers;
+                    var answer = data.results[question_num].correct_answer
+                    new_arr.push(answer);
+                    var form = (`${data.results[question_num].question}` + `<input type='radio' value='${new_arr[multiple_choice[0]]}' "name='easy'>` + `${new_arr[multiple_choice[0]]}`+ `<input type='radio' value = '${new_arr[multiple_choice[1]]}' name='easy'>` + `${new_arr[multiple_choice[1]]}` + `<input type='radio' value='${new_arr[multiple_choice[2]]}' name='easy'>` + `${new_arr[multiple_choice[2]]}` + `<input type='radio' value='${new_arr[multiple_choice[3]]}' name='easy'>` + `${new_arr[multiple_choice[3]]}`);
+                    document.getElementById("three").innerHTML=form;
+                    $('input[type=radio]').click(function(){
+                        $('#three').toggle();
+                        if(this.value == answer){
+                            points(300);
+                    }
+                });
+            });
+        };
+    });
+        $('#refresh').click(function(){
+            location.reload();
+        });
+        var total = 0;
+        function points(points){
+            total += points
+            document.getElementById("points").innerHTML=`${total} Points`
+        };
+    </script>
+</body>
+</html>
+
